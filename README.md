@@ -95,7 +95,7 @@ Azure Subscription 2 Free Plan
 │
 ├── LOG-ANL-SoloTech-US
 │
-├── AZ-MNT-SoloTech-US
+├── AZ-MNT-WKSPC-SoloTech-US
 │
 ├── DCR-4-MGMT-SVR01
 │
