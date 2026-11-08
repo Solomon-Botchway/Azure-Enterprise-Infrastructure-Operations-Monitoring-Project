@@ -1,4 +1,5 @@
 ## Azure Backup & Recovery
+<img width="427" height="441" alt="image" src="https://github.com/user-attachments/assets/93fdf5d8-3ff8-408d-a5b9-3be17959cce3" />
 
 ### Components
 
