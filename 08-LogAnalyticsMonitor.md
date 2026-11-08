@@ -177,33 +177,23 @@ LOG-ANL-SoloTech-US
 ---
 
 # Monitoring Architecture
-
 ```mermaid
 flowchart TB
 
-AZ-MGMT-SVR01
+A[AZ-MGMT-SVR01]
 
--->
+A --> B[Azure Monitor Agent]
 
-Azure Monitor Agent
+B --> C[DCR-4-MGMT-SVR01]
 
--->
+C --> D[LOG-ANL-SoloTech-US]
 
-DCR-4-MGMT-SVR01
+D --> E[Heartbeat]
 
--->
+D --> F[Performance Data]
 
-LOG-ANL-SoloTech-US
+D --> G[Windows Event Logs]
 
-LOG-ANL-SoloTech-US
-
---> Heartbeat
-
---> Perf
-
---> Event Logs
-
---> Security Events
 ```
 
 ---
