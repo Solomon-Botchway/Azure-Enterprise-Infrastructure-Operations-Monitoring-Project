@@ -1,17 +1,5 @@
 ## Azure Backup & Recovery
 
-flowchart TB
-
-A[AZ-MGMT-SVR01]
---> B[Azure Backup]
-
-B --> C[REC-SERV-VAULT-SoloTech-US]
-
-C --> D[Recovery Point]
-
-D --> E[Restore Operations]
-Implemented Azure Backup protection for Azure virtual machines using Recovery Services Vault.
-
 ### Components
 
 - Recovery Services Vault: REC-SERV-VAULT-SoloTech-US
@@ -35,3 +23,16 @@ Implemented Azure Backup protection for Azure virtual machines using Recovery Se
 - Backup Policies
 - Business Continuity
 - Infrastructure Protection
+
+```mermaid
+flowchart TB
+
+A[AZ-MGMT-SVR01]
+--> B[Azure Backup]
+
+B --> C[REC-SERV-VAULT-SoloTech-US]
+
+C --> D[Recovery Point]
+
+D --> E[Restore Operations]
+Implemented Azure Backup protection for Azure virtual machines using Recovery Services Vault.
