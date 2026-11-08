@@ -85,7 +85,7 @@ Get-AzNetworkSecurityGroup
 ```mermaid
 flowchart LR
 
-PowerShell 7
+[PowerShell 7]
 
 --> [Azure PowerShell]
 
