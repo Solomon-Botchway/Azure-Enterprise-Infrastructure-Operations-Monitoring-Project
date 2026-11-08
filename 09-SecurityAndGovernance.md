@@ -1,17 +1,24 @@
 # Azure Security & Governance
 
-## Project Objective
+## Project Overview
 
-Implement foundational Azure security controls and governance best practices to secure infrastructure resources, protect administrative access, and establish operational guardrails.
+This project focused on implementing foundational Azure security controls and governance best practices to secure infrastructure resources, protect administrative access, and establish operational guardrails.
 
-This project focused on:
+Security was integrated throughout the deployment lifecycle, beginning with subscription governance and extending through network security, virtual machine hardening, identity protection, monitoring, and operational controls.
 
-- Network Security
-- Administrative Access Control
-- Subscription Governance
-- Azure Security Features
-- Secure Infrastructure Design
-- Operational Risk Reduction
+---
+
+# Project Objectives
+
+The objectives of this phase were to:
+
+- Implement Azure governance controls
+- Secure infrastructure resources
+- Protect administrative access
+- Reduce attack surface exposure
+- Implement monitoring and visibility
+- Apply security best practices
+- Establish operational safeguards
 
 ---
 
@@ -20,98 +27,108 @@ This project focused on:
 ```mermaid
 flowchart TB
 
-A[Internet]
+    A[Internet]
+    --> B[Trusted Home Public IP]
 
-A-->B[Home Public IP]
+    B --> C[NSG-Management]
 
-B-->C[NSG-Management]
+    C --> D[Management Subnet<br>10.10.1.0/24]
 
-C-->D[Management Subnet<BR>10.10.1.0/24]
-
-D-->E[AZ-MGMT-SVR01]
-
-E-->F[Azure Monitor Agent]
-
-F-->G[Log Analytics Workspace]
+    D --> E[AZ-MGMT-SVR01]
 ```
 
 ---
 
 # Security Principles Applied
 
-The environment was designed around several core security principles:
+The environment was designed using several core security principles.
 
-### Least Privilege
+## Least Privilege
 
-Only allow the access required.
+Only the minimum permissions and access required were granted.
 
 Example:
 
 ```text
-Allow RDP only from a trusted IP address
+Allow RDP From Home Public IP
 ```
 
 instead of:
 
 ```text
-Allow RDP from Any
+Allow RDP From Any Source
 ```
 
 ---
 
-### Network Segmentation
+## Network Segmentation
 
-Administrative systems separated from future workloads.
+Infrastructure was separated into dedicated subnets.
 
 Benefits:
 
 - Reduced attack surface
-- Easier investigations
-- Better access control
-- Improved compliance
+- Clear workload separation
+- Simpler access control
+- Easier monitoring and troubleshooting
 
 ---
 
-### Defense in Depth
+## Defense In Depth
 
-Security was implemented in multiple layers:
+Multiple security layers were implemented.
 
-```text
-Azure Subscription
-        ↓
-Virtual Network
-        ↓
-Subnet Segmentation
-        ↓
-Network Security Groups
-        ↓
-Trusted Launch
-        ↓
-Operating System Security
+```mermaid
+flowchart TB
+
+    A[Azure Subscription]
+
+    A --> B[Budget Governance]
+
+    B --> C[Resource Group]
+
+    C --> D[Virtual Network]
+
+    D --> E[Subnet Segmentation]
+
+    E --> F[Network Security Groups]
+
+    F --> G[Trusted Launch VM]
+
+    G --> H[Monitoring And Logging]
+
+    H --> I[Backup And Recovery]
 ```
 
 ---
 
-# Azure Subscription Governance
+# Subscription Governance
 
 ## Subscription Review
 
-The initial environment contained multiple subscriptions.
+During deployment two Azure subscriptions were discovered.
 
-Review activities:
+Resources were initially created in the incorrect subscription and later migrated into the Azure Free Plan subscription.
+
+---
+
+## Governance Controls
+
+Validated before deployment:
 
 ```text
-Subscription Validation
-Billing Review
-Resource Ownership Validation
-Cost Centre Identification
+Subscription
+Billing Scope
+Region
+Credits
+Resource Ownership
 ```
 
 ---
 
-## Governance Outcome
+## Outcome
 
-Workloads were standardised into:
+Infrastructure standardised within:
 
 ```text
 Azure Subscription 2 Free Plan
@@ -119,34 +136,28 @@ Azure Subscription 2 Free Plan
 
 Benefits:
 
-- Consistent governance
-- Cost visibility
-- Simplified administration
+- Centralised billing
+- Simplified governance
+- Better cost visibility
+- Reduced operational complexity
 
 ---
 
-# Resource Tagging Governance
+# Resource Tagging
 
-Standard tags were applied.
+Standard governance tags were implemented:
 
 | Tag | Value |
 |----------|----------|
 | Environment | LAB |
 | Owner | SoloTech |
 
----
+Benefits:
 
-## Benefits
-
-Tags enable:
-
-```text
-Cost Tracking
-Ownership Tracking
-Resource Discovery
-Governance Reporting
-Automation
-```
+- Cost Management
+- Resource Discovery
+- Ownership Tracking
+- Governance Reporting
 
 ---
 
@@ -161,11 +172,7 @@ Management
 10.10.1.0/24
 ```
 
-Purpose:
-
-Administrative workloads.
-
-Hosted Resource:
+Protected Resource:
 
 ```text
 AZ-MGMT-SVR01
@@ -185,98 +192,44 @@ Purpose:
 
 Protect administrative infrastructure.
 
----
-
-## RDP Security
-
-### Initial Approach
-
-During planning:
-
-```text
-Source = Any
-Port = 3389
-```
-
-was considered.
-
----
-
-### Final Secure Design
-
-Implemented:
-
-```text
-Source = Home Public IP
-
-Port = 3389
-
-Protocol = TCP
-
-Action = Allow
-```
-
-Result:
-
-Only authorised administration endpoints can access:
-
-```text
-AZ-MGMT-SVR01
-```
-
----
-
-# Security Flow
+### Administrative Access Flow
 
 ```mermaid
 flowchart LR
 
-Internet
+    A[Internet]
+    --> B[Trusted Home Public IP]
 
---> Trusted Home IP
+    B --> C[NSG-Management]
 
---> NSG-Management
-
---> AZ-MGMT-SVR01
+    C --> D[AZ-MGMT-SVR01]
 ```
 
 ---
 
-# NSG-Servers
+### Rule Configuration
 
-Created:
-
-```text
-NSG-Servers-US
-```
-
-Purpose:
-
-Protect future infrastructure workloads.
-
----
-
-## Rules Implemented
-
-### RDP
+#### Allow RDP
 
 ```text
 TCP 3389
 ```
 
----
-
-### HTTPS
+Source:
 
 ```text
-TCP 443
+Home Public IP Address
+```
+
+Action:
+
+```text
+Allow
 ```
 
 ---
 
-### Default Protection
-
-Azure automatically enforces:
+### Default Azure Protection
 
 ```text
 AllowVnetInBound
@@ -288,13 +241,49 @@ DenyAllInBound
 
 ---
 
-# Trusted Launch Security
+# Infrastructure Security
 
-A Trusted Launch VM was selected during deployment.
+## NSG-Servers
+
+Created:
+
+```text
+NSG-Servers-US
+```
+
+Purpose:
+
+Protect future application and infrastructure workloads.
 
 ---
 
-## Features Enabled
+## Rules Implemented
+
+### RDP
+
+```text
+TCP 3389
+```
+
+### HTTPS
+
+```text
+TCP 443
+```
+
+---
+
+# Trusted Launch Security
+
+The management server was deployed using:
+
+```text
+Trusted Launch Virtual Machine
+```
+
+---
+
+## Enabled Features
 
 ### Secure Boot
 
@@ -302,57 +291,51 @@ Enabled
 
 Purpose:
 
-Prevent boot-level malware and rootkits.
+```text
+Block bootkits
+Block rootkits
+Protect OS startup process
+```
 
 ---
 
-### Virtual TPM (vTPM)
+### Virtual Trusted Platform Module
 
 Enabled
 
 Purpose:
 
-Provide:
-
 ```text
 Hardware-backed trust
-Boot verification
 Credential protection
+Secure boot validation
 ```
 
 ---
 
-# Security Architecture
+## Trusted Launch Architecture
 
 ```mermaid
 flowchart TB
 
-VM
+    A[AZ-MGMT-SVR01]
 
---> Trusted Launch
+    A --> B[Trusted Launch]
 
-Trusted Launch
+    B --> C[Secure Boot]
 
---> Secure Boot
+    B --> D[vTPM]
 
-Trusted Launch
+    C --> E[Operating System Protection]
 
---> vTPM
-
-Secure Boot
-
---> Operating System
-
-vTPM
-
---> Identity Protection
+    D --> F[Identity Protection]
 ```
 
 ---
 
-# Azure VM Hardening
+# VM Hardening
 
-## Network Category
+## Network Profile
 
 Changed from:
 
@@ -366,30 +349,21 @@ to:
 Private
 ```
 
-using:
+Using:
 
 ```powershell
 Set-NetConnectionProfile
 ```
 
----
+Benefits:
 
-## Benefits
-
-Supports:
-
-```text
-Remote Administration
-Monitoring
-PowerShell Remoting
-Management Services
-```
-
-while maintaining controlled access.
+- Easier administration
+- Better remote management
+- Supports future PowerShell remoting
 
 ---
 
-# IE Enhanced Security Configuration
+## IE Enhanced Security
 
 Configured:
 
@@ -399,17 +373,9 @@ Administrators = Off
 Users = On
 ```
 
----
+Purpose:
 
-## Reason
-
-Allows administrators to:
-
-- Download management tools
-- Access Microsoft documentation
-- Manage Azure resources
-
-without unnecessary restrictions.
+Allow administrative access to Microsoft downloads and tools while maintaining protection for standard users.
 
 ---
 
@@ -423,6 +389,10 @@ Configured:
 az login
 ```
 
+Purpose:
+
+Authenticate securely to Azure services using Microsoft Entra ID.
+
 ---
 
 ## Azure PowerShell Authentication
@@ -433,17 +403,31 @@ Configured:
 Connect-AzAccount
 ```
 
+Purpose:
+
+PowerShell-based administration of Azure resources.
+
 ---
 
-## Benefits
+# Azure Administration Model
 
-Secure authentication through:
+```mermaid
+flowchart LR
 
-```text
-Microsoft Entra ID
+    A[Administrator]
+
+    A --> B[Azure Portal]
+
+    A --> C[Azure CLI]
+
+    A --> D[Azure PowerShell]
+
+    B --> E[Azure Resources]
+
+    C --> E
+
+    D --> E
 ```
-
-without embedded credentials in scripts.
 
 ---
 
@@ -461,35 +445,27 @@ on:
 AZ-MGMT-SVR01
 ```
 
----
+Benefits:
 
-## Purpose
-
-Provides:
-
-```text
-Passwordless Authentication
-Azure Service Access
-Managed Credentials
-```
-
-for future projects.
+- Passwordless authentication
+- Azure service integration
+- Improved security posture
 
 ---
 
-# Monitoring Security
+# Security Monitoring
 
 ## Azure Monitor Agent
 
 Installed:
 
 ```text
-Azure Monitor Agent (AMA)
+Azure Monitor Agent
 ```
 
 Purpose:
 
-Continuous telemetry collection.
+Collect operational and security telemetry.
 
 ---
 
@@ -505,11 +481,13 @@ DCR-4-MGMT-SVR01
 
 ## Collected Data
 
-### Windows Event Logs
+### Windows Events
 
 ```text
 Application
+
 System
+
 Security
 ```
 
@@ -519,47 +497,43 @@ Security
 
 ```text
 CPU
+
 Memory
+
 Disk
+
 Network
+
 System Uptime
 ```
 
 ---
 
-# Security Monitoring Architecture
+# Monitoring Architecture
 
 ```mermaid
 flowchart TB
 
-AZ-MGMT-SVR01
+    A[AZ-MGMT-SVR01]
 
--->
+    A --> B[Azure Monitor Agent]
 
-Azure Monitor Agent
+    B --> C[DCR-4-MGMT-SVR01]
 
--->
+    C --> D[LOG-ANL-SoloTech-US]
 
-DCR-4-MGMT-SVR01
+    D --> E[Security Events]
 
--->
+    D --> F[Performance Data]
 
-LOG-ANL-SoloTech-US
-
-LOG-ANL-SoloTech-US
-
---> Security Events
-
---> Performance Data
-
---> Heartbeat Monitoring
+    D --> G[Heartbeat Monitoring]
 ```
 
 ---
 
 # Operational Security Controls
 
-## Auto-Shutdown
+## Auto Shutdown
 
 Configured:
 
@@ -569,15 +543,15 @@ Configured:
 
 Purpose:
 
-- Prevent unnecessary costs
-- Reduce unattended exposure
-- Improve operational discipline
+- Cost Reduction
+- Resource Governance
+- Reduced Risk Exposure
 
 ---
 
 ## VM Deallocation
 
-Procedure adopted:
+Adopted operational process:
 
 ```text
 Stop (Deallocate)
@@ -589,160 +563,196 @@ instead of:
 Shutdown Only
 ```
 
----
-
-## Benefits
+Benefits:
 
 ```text
-Cost Reduction
-Resource Governance
-Operational Control
+Reduced costs
+
+Improved governance
+
+Operational discipline
 ```
 
 ---
 
 # Security Challenges Encountered
 
-## Multiple Subscriptions
+## Subscription Governance Issue
 
-Issue:
+Challenge:
 
-Resources initially deployed into an incorrect subscription.
+Infrastructure initially deployed into the wrong subscription.
 
----
-
-## Resolution
+Resolution:
 
 Validated:
 
 ```text
-Subscription
 Billing Scope
-Credits
-Regions
+
+Subscription Ownership
+
+Credit Availability
+
+Resource Placement
 ```
 
-before future deployments.
+before continuing deployment.
 
 ---
 
-## Monitoring Configuration
+## Monitoring Configuration Issue
 
-Issue:
+Challenge:
 
-Heartbeat data initially unavailable.
+Azure Monitor Agent deployed successfully but logging was not functioning.
+
+Symptoms:
+
+```kusto
+Heartbeat
+| take 10
+```
+
+returned no results.
 
 ---
 
 ## Root Cause
 
-Log Analytics destination not configured.
+Original monitoring configuration collected metrics only.
+
+Missing:
+
+```text
+Log Analytics Workspace Destination
+```
 
 ---
 
 ## Resolution
 
-Implemented:
+Created:
 
 ```text
-Custom Data Collection Rule
+DCR-4-MGMT-SVR01
 ```
 
-with:
+Configured:
 
 ```text
-Windows Events
+Windows Event Logs
 
 Performance Counters
 
-Log Analytics Destination
+Log Analytics Workspace
 ```
+
+Verified using:
+
+```kusto
+Heartbeat
+
+Perf
+
+Event
+```
+
+queries.
 
 ---
 
 # Lessons Learned
 
-## Azure Monitor Workspace
+## Subscription Validation
 
-is not the same as:
+Always validate:
 
 ```text
+Subscription
+
+Billing Scope
+
+Region
+
+Credits
+```
+
+before deploying workloads.
+
+---
+
+## Azure Monitor Workspace
+
+Critical learning:
+
+```text
+Azure Monitor Workspace
+≠
 Log Analytics Workspace
 ```
 
-Both fulfil different functions within Azure monitoring.
+Each serves a different purpose within Azure monitoring.
 
 ---
 
-## Network Security Groups
+## Network Security
 
-Restricting RDP to a trusted source significantly reduces attack exposure.
-
----
-
-## Subscription Validation
-
-Subscription verification should occur before any workload deployment.
+Restricting administrative access to known IP addresses significantly reduces attack exposure.
 
 ---
 
 ## Governance First
 
-Cost management and governance should be implemented before:
-
-```text
-Virtual Machines
-Storage
-Monitoring
-Backup Services
-```
+Budgeting, tagging, and governance should be implemented before deploying infrastructure.
 
 ---
 
-# Security Skills Demonstrated
+# Skills Demonstrated
 
-## Azure Governance
+## Governance
 
-- Subscription Management
-- Resource Tagging
 - Budget Controls
-- Cost Governance
+- Resource Tagging
+- Subscription Governance
+- Cost Management
 
 ---
 
-## Azure Network Security
+## Network Security
 
 - Network Security Groups
 - Subnet Segmentation
-- Administrative Access Control
+- Access Restrictions
 - Least Privilege Design
 
 ---
 
-## Azure Compute Security
+## Azure Security
 
 - Trusted Launch
 - Secure Boot
 - vTPM
-- Azure VM Hardening
+- VM Hardening
 
 ---
 
-## Identity Security
+## Identity
 
+- Managed Identity
 - Azure CLI Authentication
 - Azure PowerShell Authentication
-- Managed Identities
 
 ---
 
 ## Security Monitoring
 
 - Azure Monitor Agent
+- Log Analytics Workspace
 - Data Collection Rules
-- Event Log Collection
-- Heartbeat Monitoring
-- Operational Visibility
+- Windows Event Collection
+- Performance Monitoring
+- KQL Validation
 
 ---
 
@@ -752,11 +762,11 @@ Successfully implemented:
 
 ✅ Subscription Governance
 
-✅ Security Tagging
+✅ Resource Tagging
 
 ✅ Network Segmentation
 
-✅ Restricted RDP Access
+✅ Restricted Administrative Access
 
 ✅ Trusted Launch Security
 
@@ -768,10 +778,10 @@ Successfully implemented:
 
 ✅ Azure Monitor Agent
 
-✅ Security Event Collection
+✅ Event Collection
 
-✅ Operational Monitoring
+✅ Security Monitoring
 
 ✅ Governance Controls
 
-The resulting environment provides a secure and governed foundation for future Azure projects including Azure Backup, RBAC, Microsoft Defender for Cloud, Key Vault, Conditional Access, and Azure Identity Governance.
+The resulting environment provides a secure and governed foundation for future Azure projects including Backup & Recovery, Azure RBAC, Defender for Cloud, Key Vault, Storage Accounts, and Identity Governance.
