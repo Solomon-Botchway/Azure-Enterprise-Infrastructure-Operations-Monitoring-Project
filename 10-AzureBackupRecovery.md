@@ -24,15 +24,24 @@
 - Business Continuity
 - Infrastructure Protection
 
+# Azure Backup Architecture
+
 ```mermaid
 flowchart TB
 
-A[AZ-MGMT-SVR01]
---> B[Azure Backup]
+    A[AZ-MGMT-SVR01<br>Management Server]
 
-B --> C[REC-SERV-VAULT-SoloTech-US]
+    A --> B[Azure Backup Service]
 
-C --> D[Recovery Point]
+    B --> C[REC-SERV-VAULT-SoloTech-US<br>Recovery Services Vault]
 
-D --> E[Restore Operations]
-Implemented Azure Backup protection for Azure virtual machines using Recovery Services Vault.
+    C --> D[Recovery Point<br>Snapshot Backup]
+
+    D --> E[Restore Operations]
+
+    E --> F[Create New VM]
+
+    E --> G[Restore Disks]
+
+    E --> H[Replace Existing VM]
+```
