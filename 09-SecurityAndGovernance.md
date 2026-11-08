@@ -20,32 +20,19 @@ This project focused on:
 ```mermaid
 flowchart TB
 
-Internet
+A[Internet]
 
-↓
+A-->B[Home Public IP]
 
-Home Public IP
+B-->C[NSG-Management]
 
-↓
+C-->D[Management Subnet<BR>10.10.1.0/24]
 
-NSG-Management
+D-->E[AZ-MGMT-SVR01]
 
-↓
+E-->F[Azure Monitor Agent]
 
-Management Subnet
-10.10.1.0/24
-
-↓
-
-AZ-MGMT-SVR01
-
-↓
-
-Azure Monitor Agent
-
-↓
-
-Log Analytics Workspace
+F-->G[Log Analytics Workspace]
 ```
 
 ---
