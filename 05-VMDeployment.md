@@ -112,26 +112,18 @@ Benefits:
 
 ---
 
-# Network Design
+# Network Design And Architecture
 
 ```mermaid
 flowchart TB
 
-[Internet]
+A[Internet]
+--> B[NSG-Management]
 
-↓
+B --> C[Management Subnet<br>10.10.1.0/24]
 
-[NSG-Management]
+C --> D[AZ-MGMT-SVR01<br>10.10.1.4]
 
-↓
-
-[Management Subnet]
-
-↓
-
-[AZ-MGMT-SVR01]
-
-10.10.1.4
 ```
 
 ---
