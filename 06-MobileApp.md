@@ -37,22 +37,17 @@ Capabilities:
 
 ---
 
-# Mobile Administration Workflow
+## Network Architecture
 
 ```mermaid
-flowchart LR
+flowchart TB
 
-Phone
+A[Internet]
+--> B[NSG-Management]
 
---> Azure App
+B --> C[Management Subnet<br>10.10.1.0/24]
 
---> Azure Resources
-
-Phone
-
---> Microsoft Remote Desktop
-
---> AZ-MGMT-SVR01
+C --> D[AZ-MGMT-SVR01<br>10.10.1.4]
 ```
 
 ---
