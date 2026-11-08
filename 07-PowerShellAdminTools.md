@@ -87,17 +87,17 @@ flowchart LR
 
 A[PowerShell 7]
 
-A-->B[Azure PowerShell]
+-->B[Azure PowerShell]
 
-B-->C[Azure Resources]
+-->C[Azure Resources]
 
 D[Azure CLI]
 
-D-->E[Azure Resources]
+-->E[Azure Resources]
 
 F[Azure Portal]
 
-F-->E[Azure Resources]
+-->E[Azure Resources]
 ```
 
 ---
