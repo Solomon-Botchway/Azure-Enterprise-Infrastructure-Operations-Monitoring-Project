@@ -117,19 +117,19 @@ Benefits:
 ```mermaid
 flowchart TB
 
-Internet
+[Internet]
 
 ↓
 
-NSG-Management
+[NSG-Management]
 
 ↓
 
-Management Subnet
+[Management Subnet]
 
 ↓
 
-AZ-MGMT-SVR01
+[AZ-MGMT-SVR01]
 
 10.10.1.4
 ```
