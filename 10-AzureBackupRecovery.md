@@ -1,6 +1,4 @@
 ## Azure Backup & Recovery
-<img width="427" height="441" alt="image" src="https://github.com/user-attachments/assets/93fdf5d8-3ff8-408d-a5b9-3be17959cce3" />
-
 ### Components
 
 - Recovery Services Vault: REC-SERV-VAULT-SoloTech-US
@@ -26,23 +24,24 @@
 - Infrastructure Protection
 
 # Azure Backup Architecture
-
 ```mermaid
 flowchart TB
 
-    A[AZ-MGMT-SVR01<br>Management Server]
+    A[AZ-MGMT-SVR01<br>Windows Server 2022]
 
     A --> B[Azure Backup Service]
 
-    B --> C[REC-SERV-VAULT-SoloTech-US<br>Recovery Services Vault]
+    B --> C[Snapshot Created]
 
-    C --> D[Recovery Point<br>Snapshot Backup]
+    C --> D[Transfer To Vault]
 
-    D --> E[Restore Operations]
+    D --> E[REC-SERV-VAULT-SoloTech-US]
 
-    E --> F[Create New VM]
+    E --> F[Recovery Point]
 
-    E --> G[Restore Disks]
+    F --> G[Restore VM]
 
-    E --> H[Replace Existing VM]
+    F --> H[Restore Disk]
+
+    F --> I[File Recovery]
 ```
