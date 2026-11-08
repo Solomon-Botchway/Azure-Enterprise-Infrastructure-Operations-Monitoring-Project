@@ -87,17 +87,17 @@ flowchart LR
 
 PowerShell 7
 
---> Azure PowerShell
+--> [Azure PowerShell]
 
---> Azure Resources
+--> [Azure Resources]
 
 Azure CLI
 
---> Azure Resources
+--> [Azure Resources]
 
 Azure Portal
 
---> Azure Resources
+--> [Azure Resources]
 ```
 
 ---
