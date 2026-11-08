@@ -85,19 +85,19 @@ Get-AzNetworkSecurityGroup
 ```mermaid
 flowchart LR
 
-[PowerShell 7]
+A[PowerShell 7]
 
---> [Azure PowerShell]
+A-->B[Azure PowerShell]
 
---> [Azure Resources]
+B-->C[Azure Resources]
 
-Azure CLI
+D[Azure CLI]
 
---> [Azure Resources]
+D-->E[Azure Resources]
 
-Azure Portal
+F[Azure Portal]
 
---> [Azure Resources]
+F-->E[Azure Resources]
 ```
 
 ---
