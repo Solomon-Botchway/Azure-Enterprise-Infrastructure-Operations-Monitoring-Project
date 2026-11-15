@@ -1,9 +1,9 @@
 # Azure-Enterprise-Infrastructure-Operations-Monitoring-Project
 Designed and deployed an enterprise-style Azure infrastructure environment including network segmentation, security controls, Azure virtual machines, Log Analytics, Azure Monitor, Azure CLI, Azure PowerShell, operational monitoring, budgeting, governance controls, and cloud administration tooling.
 
-# Enterprise Azure Infrastructure & Operations Lab
+## Enterprise Azure Infrastructure & Operations Lab
 
-## Project Overview
+### Project Overview
 
 This project documents the design, deployment, administration, monitoring, and operational management of a Microsoft Azure infrastructure environment built from scratch.
 
