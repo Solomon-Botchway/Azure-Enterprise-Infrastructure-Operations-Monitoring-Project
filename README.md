@@ -1,1 +1,1 @@
-### Kindly start from 00-README.md 
+### Go to 00-README.md 
